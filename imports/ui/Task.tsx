@@ -26,7 +26,7 @@ async function toggleChecked(id: string, isChecked: boolean) {
   });
 }
 
-async function deleteTask(id: string, _isChecked: boolean) {
+async function deleteTask(id: string,) {
   await TaskCollection.removeAsync(id)
 }
 
@@ -35,7 +35,7 @@ function TaskListItem({ task, onCheckBox, onDeleteClick }: TaskProps) {
   let { _id, text, isChecked } = task;
 
   return (
-    <li key={_id}>
+    <ul key={_id} className="tasks">
       <input
         type="checkbox"
         checked={!!isChecked}
@@ -44,7 +44,7 @@ function TaskListItem({ task, onCheckBox, onDeleteClick }: TaskProps) {
       />
       <span>{text}</span>
       <button onClick={() => onDeleteClick(task)}>&times;</button>
-    </li>
+    </ul>
   );
 }
 
@@ -54,11 +54,8 @@ export default function TaskList({ tasks }: TaskListProps) {
   return tasks.map((task) => (
     <TaskListItem
       task={{ _id: task._id!, text: task.text, isChecked: task.isChecked }}
-      onCheckBox={async (selected) => await toggleChecked(selected._id, selected.isChecked)}
-      onDeleteClick={(task) => deleteTask(task._id!, task.isChecked)}
+      onCheckBox={(selected) => toggleChecked(selected._id, selected.isChecked)}
+      onDeleteClick={(task) => deleteTask(task._id!)}
     />
   ));
 }
-
-
-
